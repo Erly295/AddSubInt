@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Game Garis Bilangan</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
     />
     <style>
       * {
@@ -565,10 +566,11 @@
               <a class="nav-link" href="pengurangan.html">➖ Pengurangan</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="Interaktif1.html">🧩 Interaktif Penjumlahan dan Pengurangan</a>
+              <a class="nav-link active" href="Interaktif1.html"
+                >🧩 Interaktif Penjumlahan dan Pengurangan</a
+              >
             </li>
           </ul>
-
         </div>
       </div>
     </nav>
@@ -764,7 +766,14 @@
         <div class="feedback" id="feedback"></div>
       </div>
     </main>
+    <script>
+      const toggler = document.querySelector(".navbar-toggler");
+      const collapse = document.querySelector(".navbar-collapse");
 
+      toggler.addEventListener("click", () => {
+        collapse.classList.toggle("show");
+      });
+    </script>
     <script>
       const canvas = document.getElementById("numberLine");
       const ctx = canvas.getContext("2d");
