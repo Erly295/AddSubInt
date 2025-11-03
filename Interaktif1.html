@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+<<<<<<< HEAD
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,145 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+=======
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Garis Bilangan</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .navbar {
+        background: linear-gradient(
+          135deg,
+          #b794f4 0%,
+          #9f7aea 50%,
+          #805ad5 100%
+        );
+        box-shadow: 0 8px 32px rgba(149, 117, 205, 0.4);
+        padding: 1.2rem 2rem;
+        border-radius: 0 0 30px 30px;
+        backdrop-filter: blur(10px);
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+      }
+
+      .container-fluid {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .navbar-brand {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .navbar-brand::before {
+        content: "✨ ";
+      }
+
+      .navbar-brand::after {
+        content: " ✨";
+      }
+
+      .navbar-brand:hover {
+        transform: scale(1.05) rotate(-2deg);
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .navbar-toggler {
+        border: none;
+        padding: 0.5rem;
+        background: white;
+        border-radius: 15px;
+        cursor: pointer;
+        display: none;
+      }
+
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(128, 90, 213, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        vertical-align: middle;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+      }
+
+      .navbar-collapse {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .navbar-nav {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+      }
+
+      .nav-item {
+        margin: 0;
+        align-self: start;
+      }
+
+      .nav-link {
+        color: #ffffff !important;
+        font-weight: 600;
+        margin: 0 0.5rem;
+        padding: 0.6rem 1.2rem !important;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        text-decoration: none;
+        display: block;
+      }
+
+      .nav-link:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+      }
+
+      .nav-link.active {
+        background: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+      }
+
+      @media (max-width: 991px) {
+        .navbar-toggler {
+          display: block;
+>>>>>>> 7f632984c14f1eb3880dc43b06466342bb87b08a
         }
 
         body {
@@ -523,6 +663,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
+<<<<<<< HEAD
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Pembelajaran Bilangan Bulat</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="background: white; border-radius: 15px">
@@ -541,6 +682,27 @@
                     </li>
                 </ul>
             </div>
+=======
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">AddSub Integer</a>
+        <button class="navbar-toggler" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">➕ Penjumlahan</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pengurangan.html">➖ Pengurangan</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="Interaktif1.html"
+                >🧩 Interaktif Penjumlahan dan Pengurangan</a
+              >
+            </li>
+          </ul>
+>>>>>>> 7f632984c14f1eb3880dc43b06466342bb87b08a
         </div>
     </nav>
     
@@ -667,9 +829,55 @@
             
             <div id="hasil" class="alert alert-success text-center result-alert" role="alert" style="display: none;"></div>
         </div>
+<<<<<<< HEAD
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+=======
+      </div>
+
+      <div class="answer-section">
+        <div class="answer-display" id="answerDisplay">_</div>
+
+        <div class="keypad">
+          <button class="key-btn" onclick="addDigit('7')">7</button>
+          <button class="key-btn" onclick="addDigit('8')">8</button>
+          <button class="key-btn" onclick="addDigit('9')">9</button>
+          <button class="key-btn" onclick="addDigit('4')">4</button>
+          <button class="key-btn" onclick="addDigit('5')">5</button>
+          <button class="key-btn" onclick="addDigit('6')">6</button>
+          <button class="key-btn" onclick="addDigit('1')">1</button>
+          <button class="key-btn" onclick="addDigit('2')">2</button>
+          <button class="key-btn" onclick="addDigit('3')">3</button>
+          <button class="key-btn" onclick="addDigit('-')">−</button>
+          <button class="key-btn" onclick="addDigit('0')">0</button>
+          <button class="key-btn" onclick="clearAnswer()">⌫</button>
+        </div>
+
+        <div class="control-buttons">
+          <button class="btn btn-check" onclick="checkAnswer()">
+            ✓ Periksa Jawaban
+          </button>
+          <button class="btn btn-reset" onclick="resetArrows()">
+            ↺ Reset Panah
+          </button>
+          <button class="btn btn-new" onclick="newQuestion()">
+            🔄 Soal Baru
+          </button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+      </div>
+    </main>
+    <script>
+      const toggler = document.querySelector(".navbar-toggler");
+      const collapse = document.querySelector(".navbar-collapse");
+
+      toggler.addEventListener("click", () => {
+        collapse.classList.toggle("show");
+      });
+    </script>
+>>>>>>> 7f632984c14f1eb3880dc43b06466342bb87b08a
     <script>
       const canvas = document.getElementById("numberLine");
       const ctx = canvas.getContext("2d");
