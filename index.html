@@ -632,9 +632,6 @@
             // Second trail - green or red based on direction
             const trailColor2 = num2 >= 0 ? '#10B981' : '#EF4444';
             
-            // Determine if car should reverse (num2 is negative means adding negative)
-            const isReversing = num2 < 0;
-            
             // Draw trail for second movement
             drawTrail(targetMidX, currentX, 70, trailColor2);
             
@@ -647,10 +644,10 @@
             }
             
             // Draw single car at current position
-            // When num2 is negative (isReversing): car faces RIGHT but moves LEFT
-            // When num2 is positive: car faces the direction it's moving (right for addition)
-            const carFacingDirection = isReversing ? "right" : "right";
-            drawCar(currentX, 65, carFacingDirection, '#6B46C1', isReversing);
+            // When num2 is negative: car faces LEFT and moves LEFT (same as num1 negative behavior)
+            // When num2 is positive: car faces RIGHT and moves RIGHT
+            const carFacingDirection = num2 >= 0 ? "right" : "left";
+            drawCar(currentX, 65, carFacingDirection, '#6B46C1');
 
             // Label for second movement (simple label, detailed info on hover)
             ctx.font = "bold 16px Quicksand";
