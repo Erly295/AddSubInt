@@ -64,7 +64,7 @@
         
         <div class="card canvas-card mb-4">
             <div class="card-body p-0">
-                <canvas id="garis" width="700" height="250"></canvas>
+                <canvas id="garis" width="700" height="280"></canvas>
             </div>
         </div>
         
@@ -82,16 +82,21 @@
                     <p>
                         <b>🌸 Angka Pertama</b><br>
                         Menentukan titik awal pada garis bilangan.<br>
-                        • Jika positif (+), bergerak ke kanan dari 0<br>
-                        • Jika negatif (-), bergerak ke kiri dari 0<br><br>
+                        • Jika positif (+), mobil bergerak ke kanan dari 0<br>
+                        • Jika negatif (-), mobil bergerak ke kiri dari 0<br><br>
                         
                         <b>💜 Angka Kedua</b><br>
                         Menentukan langkah berikutnya:<br>
-                        • Jika positif (+), bergerak ke kiri dari angka pertama<br>
-                        • Jika negatif (-), bergerak ke kanan dari angka pertama<br><br>
+                        • Jika positif (+), mobil menghadap kiri dan bergerak ke kiri<br>
+                        • Jika negatif (-), mobil menghadap kiri tapi bergerak mundur ke kanan<br><br>
+                        
+                        <b>🚗 Lampu Mobil</b><br>
+                        • 🟡 Kuning = Lampu depan (headlight)<br>
+                        • 🔴 Merah = Lampu belakang (taillight)<br>
+                        Perhatikan posisi lampu untuk mengetahui arah hadap mobil!<br><br>
                         
                         <b>Note</b><br>
-                        Misalkan a adalah bilangan bulat, maka -(-a) = a
+                        Misalkan a adalah bilangan bulat, maka a − (−b) = a + b
                     </p>
                 </div>
             </div>
@@ -116,7 +121,7 @@
         function resizeCanvas() {
             const container = canvas.parentElement;
             canvas.width = container.offsetWidth - 40;
-            canvas.height = 250;
+            canvas.height = 280;
             if (document.getElementById('num1').value || document.getElementById('num2').value) {
                 startAnimation();
             }
@@ -292,6 +297,145 @@
             ctx.shadowBlur = 0;
         }
 
+        function drawCar(x, y, direction, color, isReverse = false, isSilhouette = false) {
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Flip car based on direction
+            if (direction === "left") {
+                ctx.scale(-1, 1);
+            }
+            
+            // Set global alpha for silhouette
+            if (isSilhouette) {
+                ctx.globalAlpha = 0.95;
+            }
+            
+            // Car body shadow (reduced for silhouette)
+            if (!isSilhouette) {
+                ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetY = 3;
+            }
+            
+            // Car body (main)
+            ctx.fillStyle = isSilhouette ? 'rgba(107, 70, 193, 0.5)' : color;
+            ctx.beginPath();
+            ctx.roundRect(-25, -12, 50, 20, 5);
+            ctx.fill();
+            
+            // Car roof
+            ctx.beginPath();
+            ctx.roundRect(-15, -22, 28, 12, 4);
+            ctx.fill();
+            
+            // Reset shadow for details
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetY = 0;
+            
+            // Windows
+            ctx.fillStyle = isSilhouette ? "rgba(135, 206, 250, 0.4)" : "rgba(135, 206, 250, 0.9)";
+            ctx.beginPath();
+            ctx.roundRect(-12, -20, 11, 8, 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.roundRect(1, -20, 11, 8, 2);
+            ctx.fill();
+            
+            // Headlight and Taillight
+            if (!isSilhouette) {
+                // Headlight yellow at front (x=22), taillight red at back (x=-22)
+                // When direction is "left", the car is flipped so lights appear correctly
+                ctx.fillStyle = "#FFD700";
+                ctx.beginPath();
+                ctx.ellipse(22, -2, 4, 3, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = "#FF4444";
+                ctx.beginPath();
+                ctx.ellipse(-22, -2, 3, 3, 0, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                // Silhouette lights (faded)
+                ctx.fillStyle = "rgba(255, 215, 0, 0.3)";
+                ctx.beginPath();
+                ctx.ellipse(22, -2, 4, 3, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = "rgba(255, 68, 68, 0.3)";
+                ctx.beginPath();
+                ctx.ellipse(-22, -2, 3, 3, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Wheels
+            ctx.fillStyle = isSilhouette ? "rgba(51, 51, 51, 0.4)" : "#333";
+            ctx.beginPath();
+            ctx.arc(-15, 10, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(15, 10, 7, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Wheel caps
+            ctx.fillStyle = isSilhouette ? "rgba(136, 136, 136, 0.4)" : "#888";
+            ctx.beginPath();
+            ctx.arc(-15, 10, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(15, 10, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        }
+
+        function drawTrail(startX, endX, y, color) {
+            const gradient = ctx.createLinearGradient(startX, y, endX, y);
+            if (startX < endX) {
+                gradient.addColorStop(0, "rgba(255,255,255,0)");
+                gradient.addColorStop(0.3, color + "40");
+                gradient.addColorStop(1, color + "90");
+            } else {
+                gradient.addColorStop(0, color + "90");
+                gradient.addColorStop(0.7, color + "40");
+                gradient.addColorStop(1, "rgba(255,255,255,0)");
+            }
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(Math.min(startX, endX), y - 4, Math.abs(endX - startX), 8, 4);
+            ctx.fill();
+            
+            // Tire marks
+            ctx.strokeStyle = color + "60";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 6]);
+            ctx.beginPath();
+            ctx.moveTo(startX, y + 3);
+            ctx.lineTo(endX, y + 3);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(startX, y - 3);
+            ctx.lineTo(endX, y - 3);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawDustParticles(x, y, direction, progress) {
+            const numParticles = 5;
+            for (let i = 0; i < numParticles; i++) {
+                const offsetX = direction === "right" ? -20 - Math.random() * 30 : 20 + Math.random() * 30;
+                const offsetY = (Math.random() - 0.5) * 20;
+                const size = 2 + Math.random() * 4;
+                const alpha = 0.3 + Math.random() * 0.3;
+                
+                ctx.fillStyle = `rgba(200, 180, 160, ${alpha * (1 - (progress % 0.3) / 0.3)})`;
+                ctx.beginPath();
+                ctx.arc(x + offsetX, y + offsetY, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
         function drawResultMarker(x, y, result) {
             ctx.shadowColor = "rgba(107, 70, 193, 0.5)";
             ctx.shadowBlur = 15;
@@ -309,16 +453,33 @@
         }
 
         let resultX, resultY, resultValue;
+        let label2Info = { x: 0, y: 0, width: 0, num2: 0, visible: false };
         
         canvas.addEventListener("mousemove", (e) => {
             const rect = canvas.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
 
+            // Check hover on result marker
             if (resultX && Math.hypot(mouseX - resultX, mouseY - resultY) < 15) {
                 tooltip.style.left = `${e.clientX + 10}px`;
                 tooltip.style.top = `${e.clientY - 10}px`;
-                tooltip.textContent = `Hasil: ${resultValue} ✨`;
+                tooltip.textContent = `Hasil: ${resultValue}`;
+                tooltip.style.opacity = "1";
+            }
+            // Check hover on second label (num2 operation)
+            else if (label2Info.visible && 
+                     mouseX >= label2Info.x - label2Info.width/2 - 15 && 
+                     mouseX <= label2Info.x + label2Info.width/2 + 15 &&
+                     mouseY >= label2Info.y - 20 && 
+                     mouseY <= label2Info.y + 20) {
+                tooltip.style.left = `${e.clientX + 10}px`;
+                tooltip.style.top = `${e.clientY - 10}px`;
+                if (label2Info.num2 < 0) {
+                    tooltip.textContent = `−(${label2Info.num2}) = +${-label2Info.num2} ✨`;
+                } else {
+                    tooltip.textContent = `−${label2Info.num2} 💫`;
+                }
                 tooltip.style.opacity = "1";
             } else {
                 tooltip.style.opacity = "0";
@@ -373,25 +534,26 @@
                 if (!midXReached) {
                     currentX = startX + (targetMidX - startX) * Math.min(progress, 1);
                     
-                    // First arrow (num1)
-                    ctx.strokeStyle = '#B794F4';
-                    ctx.lineWidth = 5;
-                    ctx.shadowColor = "rgba(183, 148, 244, 0.4)";
-                    ctx.shadowBlur = 10;
-                    ctx.beginPath();
-                    ctx.moveTo(startX, 60);
-                    ctx.lineTo(currentX, 60);
-                    ctx.setLineDash([10, 8]);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                    ctx.shadowBlur = 0;
+                    // First trail (num1) - purple
+                    const trailColor1 = '#B794F4';
+                    drawTrail(startX, currentX, 70, trailColor1);
+                    
+                    // Draw dust particles
+                    if (progress < 1) {
+                        const carDirection1 = num1 >= 0 ? "right" : "left";
+                        drawDustParticles(currentX, 70, carDirection1, progress);
+                    }
+                    
+                    // Draw single car
+                    const num1Direction = num1 >= 0 ? "right" : "left";
+                    drawCar(currentX, 65, num1Direction, '#6B46C1');
 
                     // Label for num1
                     ctx.font = "bold 16px Quicksand";
                     ctx.fillStyle = '#B794F4';
                     ctx.textAlign = "center";
                     const labelX1 = (startX + currentX) / 2;
-                    const labelY1 = 60 - 18;
+                    const labelY1 = 70 - 35;
                     
                     // Background bubble
                     const text1 = num1.toString();
@@ -407,9 +569,6 @@
                     ctx.fillStyle = '#B794F4';
                     ctx.fillText(text1, labelX1, labelY1);
 
-                    const num1Direction = num1 >= 0 ? "right" : "left";
-                    drawArrowhead(currentX, 60, num1Direction, '#B794F4');
-
                     if (progress >= 1) {
                         midXReached = true;
                         startTime = timestamp;
@@ -419,24 +578,20 @@
                     const secondProgress = (timestamp - startTime) / animationDuration;
                     currentX = targetMidX + (targetEndX - targetMidX) * Math.min(secondProgress, 1);
 
-                    // First arrow stays
-                    ctx.strokeStyle = '#B794F4';
-                    ctx.lineWidth = 5;
-                    ctx.shadowColor = "rgba(183, 148, 244, 0.4)";
-                    ctx.shadowBlur = 10;
-                    ctx.beginPath();
-                    ctx.moveTo(startX, 60);
-                    ctx.lineTo(targetMidX, 60);
-                    ctx.setLineDash([10, 8]);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                    ctx.shadowBlur = 0;
+                    // First trail stays - purple
+                    const trailColor1 = '#B794F4';
+                    drawTrail(startX, targetMidX, 70, trailColor1);
+                    
+                    // Draw silhouette/ghost car at end of first journey (num1 position)
+                    const num1Direction = num1 >= 0 ? "right" : "left";
+                    drawCar(targetMidX, 65, num1Direction, 'rgba(107, 70, 193, 0.3)', false, true);
 
+                    // Label for num1
                     ctx.font = "bold 16px Quicksand";
                     ctx.fillStyle = '#B794F4';
                     ctx.textAlign = "center";
                     const labelX1 = (startX + targetMidX) / 2;
-                    const labelY1 = 60 - 18;
+                    const labelY1 = 70 - 35;
                     
                     const text1 = num1.toString();
                     const textWidth1 = ctx.measureText(text1).width;
@@ -451,51 +606,62 @@
                     ctx.fillStyle = '#B794F4';
                     ctx.fillText(text1, labelX1, labelY1);
 
-                    const num1Direction = num1 >= 0 ? "right" : "left";
-                    drawArrowhead(targetMidX, 60, num1Direction, '#B794F4');
-
-                    // Second arrow (SUBTRACTION: negative num2 means opposite direction)
-                    // Subtracting positive = move left, subtracting negative = move right
-                    const effectiveMovement = -num2; // Pengurangan membalik arah
-                    const arrowColor = effectiveMovement >= 0 ? '#10B981' : '#EF4444';
+                    // Second trail - green or red based on direction
+                    const effectiveMovement = -num2;
+                    const trailColor2 = effectiveMovement >= 0 ? '#10B981' : '#EF4444';
                     
-                    ctx.strokeStyle = arrowColor;
-                    ctx.lineWidth = 5;
-                    ctx.shadowColor = effectiveMovement >= 0 ? "rgba(16, 185, 129, 0.4)" : "rgba(239, 68, 68, 0.4)";
-                    ctx.shadowBlur = 10;
-                    ctx.beginPath();
-                    ctx.moveTo(targetMidX, 140);
-                    ctx.lineTo(currentX, 140);
-                    ctx.setLineDash([10, 8]);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                    ctx.shadowBlur = 0;
+                    // Determine if car should reverse (num2 is negative means subtracting negative)
+                    const isReversing = num2 < 0;
+                    
+                    // Draw trail for second movement
+                    drawTrail(targetMidX, currentX, 70, trailColor2);
+                    
+                    // Draw dust particles
+                    // Actual movement direction (where the car physically goes)
+                    const actualMovementDirection = effectiveMovement >= 0 ? "right" : "left";
+                    
+                    if (secondProgress < 1) {
+                        drawDustParticles(currentX, 70, actualMovementDirection, secondProgress);
+                    }
+                    
+                    // Draw single car at current position
+                    // When num2 is negative (isReversing): car faces LEFT but moves RIGHT
+                    // When num2 is positive: car faces the direction it's moving (left for subtraction)
+                    const carFacingDirection = isReversing ? "left" : "left";
+                    drawCar(currentX, 65, carFacingDirection, '#6B46C1', isReversing);
 
+                    // Label for second movement (simple label, detailed info on hover)
                     ctx.font = "bold 16px Quicksand";
-                    ctx.fillStyle = arrowColor;
+                    ctx.fillStyle = trailColor2;
                     ctx.textAlign = "center";
                     const labelX2 = (targetMidX + currentX) / 2;
-                    const labelY2 = 140 + 30;
+                    const labelY2 = 70 + 45;
                     
-                    // Label shows the operation being performed
-                    const text2 = `−${num2}`;
+                    // Simple label showing just the effective movement
+                    const effectiveNum = -num2;
+                    const text2 = effectiveNum >= 0 ? `+${effectiveNum}` : `${effectiveNum}`;
                     const textWidth2 = ctx.measureText(text2).width;
                     ctx.fillStyle = 'white';
-                    ctx.strokeStyle = arrowColor;
+                    ctx.strokeStyle = trailColor2;
                     ctx.lineWidth = 3;
                     ctx.beginPath();
                     ctx.roundRect(labelX2 - textWidth2/2 - 10, labelY2 - 18, textWidth2 + 20, 28, 14);
                     ctx.fill();
                     ctx.stroke();
                     
-                    ctx.fillStyle = arrowColor;
+                    ctx.fillStyle = trailColor2;
                     ctx.fillText(text2, labelX2, labelY2);
+                    
+                    // Store label info for hover tooltip
+                    label2Info = { x: labelX2, y: labelY2, width: textWidth2 + 20, num2: num2, visible: true };
 
-                    const num2Direction = effectiveMovement >= 0 ? "right" : "left";
-                    drawArrowhead(currentX, 140, num2Direction, arrowColor);
-
+                    // Result display with detailed explanation
                     hasilDiv.style.display = 'block';
-                    hasilDiv.textContent = `${num1} − (${num2}) = ${hasil}`;
+                    if (num2 < 0) {
+                        hasilDiv.innerHTML = `${num1} − (${num2}) = ${num1} + ${-num2} = <b>${hasil}</b>`;
+                    } else {
+                        hasilDiv.innerHTML = `${num1} − ${num2} = <b>${hasil}</b>`;
+                    }
                     hasilDiv.classList.add("updated");
                     setTimeout(() => hasilDiv.classList.remove("updated"), 600);
 
